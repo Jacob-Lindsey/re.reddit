@@ -1,0 +1,38 @@
+.karma-wrapper {
+    display: flex;
+    flex-direction: column;
+    order: 1;
+    color: rgb(84,84,84);
+    font-weight: 600;
+}
+
+.karma-wrapper span {
+    cursor: pointer;
+}
+
+.karma-wrapper > span:first-child:hover {
+    color: rgba(0,220,0,0.7);
+}
+
+.karma-wrapper > span:last-child:hover {
+    color: rgba(250,0,0,0.7);
+}
+
+@media (max-width:768px) {
+    .karma-wrapper {
+        display: flex;
+        flex-direction: column;
+        order: 1;
+        padding: 10px 0px;
+    }
+    
+    /* .karma-wrapper span {
+        color: rgb(84,84,84);
+    } */
+
+    .karma-wrapper div {
+        color: #fff;
+        font-size: 0.78rem;
+        font-weight: 600;
+    }   
+}

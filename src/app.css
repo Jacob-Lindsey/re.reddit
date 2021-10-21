@@ -1,0 +1,19 @@
+.App {
+    height: 100%;
+    overflow-x: hidden;
+    text-align: center;
+  }
+  
+  .content-container {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem 0 0 1rem;
+    width: 100%;
+    
+  }
+  
+  @media (max-width: 768px) {
+    .content-container {
+      margin: 0;
+    }
+  }
