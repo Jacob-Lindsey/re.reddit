@@ -180,3 +180,12 @@ export const Image = styled.div`
 
 export const Title = styled.div`
 `;
+
+export const Anchor = styled.a`
+    &:link {
+        color: #eee;
+    }
+    &:visited {
+        color: rgb(136,136,136);
+    }
+`;

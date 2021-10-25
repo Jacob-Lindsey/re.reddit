@@ -3,12 +3,16 @@ import { Link } from "react-router-dom";
 import VoteButtons from "../vote-buttons/vote-buttons";
 import getScreenSize from "../../utils/getScreenSize";
 import { Wrapper, Details, SubDetails, Author,
-         Location, FlairDesktop, FlairMobile, Image, SubDetailsLink, WrapperLink
+         Location, FlairDesktop, FlairMobile, Image, SubDetailsLink, WrapperLink, Anchor
         } from "./style";
 
 const Post = ({ post }) => {
 
   const screenWidth = getScreenSize().width;
+
+  const handleClick = () => {
+      window.location.href = post.url;
+  }
 
   return (
 
@@ -18,10 +22,20 @@ const Post = ({ post }) => {
                 <VoteButtons post={post} />
                 <Details>
                     <>
-                        {post.title}
-                        <FlairDesktop>Flair</FlairDesktop>
+                        {
+                            post.url ?
+                                <Anchor href={post.url}> {post.title} </Anchor>
+                                    :
+                                <span>{post.title}</span>
+                        }
+                        {
+                            post.flair ? <FlairDesktop>{post.flair}</FlairDesktop> : null
+                                    
+                        }
+                        
+                        
                     </>
-                    <SubDetails>submitted {post.createdAt} ago by&nbsp; <Author>{post.createdBy}</Author> &nbsp;to <Location>r/{post.subreddit}</Location></SubDetails>
+                    <SubDetails>submitted {post.createdAt} ago by&nbsp; <Link to="/profile"><Author>{post.createdBy}</Author></Link> &nbsp;to <Location>r/{post.subreddit}</Location></SubDetails>
                     <SubDetails>
                         <span>
                             <SubDetailsLink to={{ pathname: `/post/${post.id}`, state: {post} }}>{post.comments.length} comments</SubDetailsLink>
@@ -35,7 +49,14 @@ const Post = ({ post }) => {
                         </span>
                     </SubDetails>
                 </Details>
-                <Image></Image>
+                {
+                    post.url ?
+                        <Image onClick={handleClick}></Image>
+                            :
+                        <Image></Image>
+                        
+
+                }
             </Wrapper>
             
             

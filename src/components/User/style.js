@@ -13,8 +13,9 @@ export const UserName = styled.a`
 `;
 
 export const OnlineStatus = styled.span`
-    color: rgb(140,179,217);
-    font-family: arial;
+    background-color: rgb(0,179,40);
+    border-radius: 50%;
+    margin: 0 6px;
 `;
 
 export const UserKarma = styled.span`

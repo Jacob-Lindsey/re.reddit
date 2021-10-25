@@ -85,6 +85,7 @@ export const Logout = styled.div`
     color: rgb(140,179,217);
     cursor: pointer;
     font-family: arial;
+    margin-right: 2%;
     &:hover {
         text-decoration: underline;
     }

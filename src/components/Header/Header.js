@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { auth } from "../../lib/firebase";
 import { Wrapper, HeaderLeft, HeaderRight, HeaderImg, Separator,
          Inbox, Preferences, Logout } from "./style";
 import MobileHeader from "../MobileHeader/MobileHeader";
@@ -10,9 +11,22 @@ import User from "../User/User";
 import inboxEmpty from "../../images/inbox-empty.png";
 import inboxActive from "../../images/inbox-active.png";
 
-const Header = () => {
+const Header = (props) => {
 
     const [isInboxActive, setIsInboxActive] = useState(false);
+
+    let history = useHistory();
+
+    const displayName = props.user ? props.user.email : null;
+
+    const handleLogOut = () => {
+        auth.signOut();
+        history.push('/')
+    }
+
+    const handleLogIn = () => {
+        history.push('/login');
+    }
 
     return (
         <>
@@ -29,13 +43,15 @@ const Header = () => {
 
                 <HeaderRight>
 
-                    <User />
+                    <User displayName={displayName} />
                     <Separator>|</Separator>
                     <Inbox img={isInboxActive ? inboxActive : inboxEmpty}></Inbox>
                     <Separator>|</Separator>
                     <Preferences>preference</Preferences>
                     <Separator>|</Separator>
-                    <Logout>logout</Logout>
+                    { props.user !== null ? <Logout onClick={handleLogOut}>logout</Logout> : <Logout onClick={handleLogIn}>login</Logout> }
+                    
+                    
 
                 </HeaderRight>
             </Wrapper>
@@ -54,3 +70,4 @@ const ImgLink = styled(Link)`
         text-decoration: none;
     }
 `;
+

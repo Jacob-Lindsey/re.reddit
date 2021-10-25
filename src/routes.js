@@ -4,6 +4,7 @@ import Home from "./components/Home/Home";
 import Submit from "./components/Submit/Submit";
 import Profile from "./components/Profile/Profile";
 import PostDetail from "./components/PostDetail/PostDetail";
+import Login from "./components/Login/Login";
 
 const ROUTES = [
     {
@@ -36,6 +37,12 @@ const ROUTES = [
         key: "PROFILE",
         component: Profile
     },
+    {
+        path: "/login",
+        exact: true,
+        key: "LOGIN",
+        component: Login
+    }
 ];
 
 export default ROUTES;

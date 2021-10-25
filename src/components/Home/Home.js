@@ -4,22 +4,8 @@ import Post from "../Post/Post";
 import SidePanel from "../SidePanel/SidePanel";
  
 const Home = ({ routes }) => {
-    const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-
-    db.collection("posts")
-      .orderBy("createdAt", "desc")
-      .get()
-      .then((querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
-        setPosts(data);
-      });
-  }, []);
+  
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
 
