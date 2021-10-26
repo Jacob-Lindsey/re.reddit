@@ -38,7 +38,7 @@ const Post = ({ post }) => {
                     <SubDetails>submitted {post.createdAt} ago by&nbsp; <Link to="/profile"><Author>{post.createdBy}</Author></Link> &nbsp;to <Location>r/{post.subreddit}</Location></SubDetails>
                     <SubDetails>
                         <span>
-                            <SubDetailsLink to={{ pathname: `/post/${post.id}`, state: {post} }}>{post.comments.length} comments</SubDetailsLink>
+                            <SubDetailsLink to={{ pathname: `/post/${post.id}`, state: {post} }}>{post.comments} comments</SubDetailsLink>
                             <span>source</span>
                             <span>share</span>
                             <span>save</span>
@@ -72,7 +72,7 @@ const Post = ({ post }) => {
                     </>
                     <SubDetails>to r/{post.subreddit} by {post.createdBy}</SubDetails>
                     <SubDetails>{post.createdAt}</SubDetails>
-                    <SubDetails>{post.comments.length} comments</SubDetails>
+                    <SubDetails>{post.comments} comments</SubDetails>
                 </Details>
                 <Image></Image>
             </WrapperLink>

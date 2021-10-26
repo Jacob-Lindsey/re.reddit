@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { app, auth, db } from "../../lib/firebase";
+import { increment } from "firebase/firestore";
+import { auth, db } from "../../lib/firebase";
+import Comment from "../Comment/Comment";
 import { NewCommentWrapper, SubmitButton, CommentTextBox, Wrapper,
-         Comment, CommentTop, Author, Karma, TimePosted, Controls, PostContent,
-         PostTitle, PostAuthor, Divider
+         PostContent, PostTitle, PostAuthor, Divider
        } from "./style";
 
 
@@ -14,47 +15,63 @@ const PostDetail = (post) => {
     const authorRef = useRef(null);
     const titleRef = useRef(null);
     const postRef = useRef(null);
+    const docIdRef = useRef(null);
     
     const postId = post.location.state.post.id;
-    
+
     useEffect(() => {
 
-        const dbRef = db.collection("posts").doc(postId).get();
+        const dbRef = db.collection("comments").get();
 
-        dbRef.then(function(doc) {
-            if (doc.exists) {
-                authorRef.current = doc.data().createdBy;
-                titleRef.current = doc.data().title;
-                postRef.current = doc.data().textContent; 
-                setGetComments(doc.data().comments);
-                setLoaded(true);
-            } else {
-                console.log("No such document!");
-            }
-        }).catch(function(error) {
-            console.log("Error getting document: ", error);
-        });
+        db.collection("comments")
+            .orderBy("createdAt", "desc")
+            .onSnapshot((querySnapshot) => {
+
+                const _comments = [];
+
+                querySnapshot.forEach((doc) => {
+                    authorRef.current = post.location.state.post.createdBy;
+                    titleRef.current = post.location.state.post.title;
+                    postRef.current = post.location.state.post.textContent;
+
+                    if (doc.data().postId === postId) {
+                        _comments.push({
+                            id: doc.id,
+                            ...doc.data(),
+                        });
+                    }
+            });
+            setGetComments(_comments);
+            setLoaded(true);
+        });        
     }, []);
 
+    // POSTS A TOP LEVEL COMMENT - COMMENT ID === DOC ID - PARENT ID IS NULL
+
     const handleSubmit = async () => {
-        const date = new Date();
-        const newComment = {
-            comments: [],
-            createdAt: date.toUTCString(),
-            createdBy: auth.currentUser.email,
-            downVotesCount: 0,
-            text: text,
-            updateAt: date.toUTCString(),
-            upVotesCount: 0
+
+        if (text !== '') {
+            const date = new Date();
+            const docId = db.collection("comments").doc().id;
+
+            await db.collection("posts").doc(postId).update({
+                comments: increment(1)
+            });
+
+            await db.collection("comments").doc(docId).set({
+                commentId: docId,
+                createdAt: date.toUTCString(),
+                createdBy: auth.currentUser.email,
+                downVotesCount: 0,
+                parentId: null,
+                postId: postId,
+                text: text,
+                updateAt: date.toUTCString(),
+                upVotesCount: 0
+            });
+
+            setText("");
         }
-        await db.collection("posts").doc(postId).update({
-            comments: app.firestore.FieldValue.arrayUnion(newComment)
-        });
-        await db.collection("posts").doc(postId).update({
-            updateAt: date.toUTCString()
-        });
-        setText("");
-        window.location.reload();
     };
 
     return (
@@ -74,24 +91,14 @@ const PostDetail = (post) => {
                 <SubmitButton onClick={handleSubmit}>save</SubmitButton>
             </NewCommentWrapper>
             <Wrapper>
-
-                    {loaded ? getComments.map((comment, i) => {
+                    {loaded && getComments ? getComments.map((comment, i) => {
                         return (
-                            <Comment>
-                                <CommentTop>
-                                    <Author>{comment.createdBy}</Author>
-                                    <Karma>{comment.upVotesCount - comment.downVotesCount} points</Karma>
-                                    <TimePosted>{comment.createdAt}</TimePosted>
-                                </CommentTop>
-                                <div key={i}> {comment.text} </div>
-                            </Comment>
+                            <Comment comment={comment} postId={postId} />
                         )
                     })
                     : 
                             <div> DATA LOADING </div>       
-                    }
-
-                
+                    }s
             </Wrapper>
         </>
     )

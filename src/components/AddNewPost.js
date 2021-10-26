@@ -36,7 +36,7 @@ const AddNewPost = (props) => {
 
         if (tab) {
             await db.collection("posts").add({
-                comments: [],
+                comments: 0,
                 createdAt: date.toUTCString(),
                 createdBy: props.user.email,
                 downVotesCount: 0,
@@ -55,7 +55,7 @@ const AddNewPost = (props) => {
                 return
             }
             await db.collection("posts").add({
-                comments: [],
+                comments: 0,
                 createdAt: date.toUTCString(),
                 createdBy: props.user.email,
                 downVotesCount: 0,

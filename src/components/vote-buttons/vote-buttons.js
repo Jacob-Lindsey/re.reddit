@@ -73,7 +73,7 @@ const VoteButtons = ({ post }) => {
             upVotesCount,
             downVotesCount,
             createdAt: post.createdAt,
-            updatedAt: date.toUTCString(),
+            updateAt: date.toUTCString(),
         });
 
         handleDisableVoting(post.id);

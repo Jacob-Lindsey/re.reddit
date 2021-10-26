@@ -69,6 +69,11 @@ export const Comment = styled.div`
     width: 100%:
 `;
 
+export const CommentText = styled.div`
+    color: #fff;
+    font-size: 0.9rem;
+`;
+
 export const CommentTop = styled.div`
     display: flex;
     font-size: 0.75rem;
@@ -78,19 +83,44 @@ export const CommentTop = styled.div`
 export const Author = styled.div`
     color: rgb(106, 152, 175);
     cursor: pointer;
+    font-weight: bold;
     &:hover {
         text-decoration: underline;
     }
 `;
 
 export const Karma = styled.div`
-
+    color: rgb(180,180,180);
+    font-size: 0.65rem;
+    font-weight: bold;
 `;
 
 export const TimePosted = styled.div`
-
+    color: rgb(140,140,140);
+    font-size: 0.65rem;
 `;
 
 export const Controls = styled.div`
+    color: #888;
+    cursor: pointer;
+    font-size: 0.65rem;
+    margin: 4px 0px 0px 0px;
+    text-align: left;
 
+    & > span > span {
+        cursor: pointer;
+        font-size: 0.73rem;
+        font-weight: 600;
+        margin: 0px 8px 0px 0px;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+    @media (max-width: 768px) {
+        color: #bbb;
+        font-size: 0.65rem;
+        font-weight: 300;
+        margin-top: 2px;
+    }
 `;
+
