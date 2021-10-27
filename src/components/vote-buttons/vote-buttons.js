@@ -68,6 +68,7 @@ const VoteButtons = ({ post }) => {
         await db.collection("posts").doc(post.id).set({
             comments: post.comments,
             createdBy: post.createdBy,
+            flair: post.flair,
             subreddit: post.subreddit,
             title: post.title,
             upVotesCount,

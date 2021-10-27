@@ -9,6 +9,7 @@ const CommentReply = (props) => {
     const [text, setText] = useState('');
 
     const handleClick = () => {
+        setText('');
         props.setCommenting(false);
     };
 
@@ -33,7 +34,6 @@ const CommentReply = (props) => {
             updateAt: date.toUTCString(),
             upVotesCount: 0
         });
-        setText("");
     };
 
     return (

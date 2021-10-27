@@ -1,51 +1,24 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
-import { db } from "../../lib/firebase";
 import CommentReply from "../CommentReply/CommentReply";
-import NestedComment from "../NestedComment/NestedComment";
 
-
-const Comment = (props) => {
+const NestedComment = (props) => {
 
     const [text, setText] = useState('');
     const [commenting, setCommenting] = useState(false);
-    const [nestedComments, setNestedComments] = useState(null);
 
     const handleClick = () => {
         setCommenting(true);  
     };
 
-    useEffect(() => {
-
-        const dbRef = db.collection("comments").get();
-
-        db.collection("comments")
-            .orderBy("createdAt", "desc")
-            .onSnapshot((querySnapshot) => {
-
-                const _nestedComments = [];
-
-                querySnapshot.forEach((doc) => {
-                    if (doc.data().parentId === props.comment.commentId) {
-                        _nestedComments.push({
-                            id: doc.id,
-                            ...doc.data(),
-                        });
-                    }
-            });
-            setNestedComments(_nestedComments);
-        });        
-    }, []);
+    console.log(props.comment.text)
 
     return (
 
-        <Wrapper>
+        <NestedWrapper>
             <CommentTop>
                 <Author>{props.comment.createdBy}</Author>
-                <Karma>
-                    {props.comment.upVotesCount - props.comment.downVotesCount}
-                    points
-                </Karma>
+                <Karma>{props.comment.upVotesCount - props.comment.downVotesCount} points</Karma>
                 <TimePosted>{props.comment.createdAt}</TimePosted>
             </CommentTop>
             <CommentText> {props.comment.text} </CommentText>
@@ -62,44 +35,20 @@ const Comment = (props) => {
                 </span>
             </Controls>
             <CommentReply 
-                parentId={props.comment.commentId}
-                postId={props.postId}
+                parentID={props.comment.commentId}
+                postId={props.comment.postId}
                 text={text}
                 commenting={commenting}
                 setText={setText}
                 setCommenting={setCommenting}
             />
-            {nestedComments ? 
-                nestedComments.map((com, i) => {
-                    return (
-                        <NestedComment 
-                            comment={com}
-                            key={i}
-                        />
-                    )
-                })
-                :
-                null
-            }
-        </Wrapper>
+        </NestedWrapper>
 
     )
 
 };
 
-export default Comment;
-
-export const Wrapper = styled.div`
-    background-color: rgb(22,22,22);
-    color: #ddd;
-    font-size: 1rem;
-    font-weight: 300;
-    line-height: 1.5rem;
-    margin: 5px 0px;
-    padding: 10px 0px 10px 20px;
-    text-align: left;
-    width: 100%;
-`;
+export default NestedComment;
 
 export const NestedWrapper = styled.div`
     background-color: rgb(39,39,39);

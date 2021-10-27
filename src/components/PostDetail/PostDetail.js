@@ -18,11 +18,11 @@ const PostDetail = (post) => {
     const docIdRef = useRef(null);
     
     const postId = post.location.state.post.id;
+    authorRef.current = post.location.state.post.createdBy;
+    titleRef.current = post.location.state.post.title;
+    postRef.current = post.location.state.post.textContent;
 
     useEffect(() => {
-
-        const dbRef = db.collection("comments").get();
-
         db.collection("comments")
             .orderBy("createdAt", "desc")
             .onSnapshot((querySnapshot) => {
@@ -30,10 +30,6 @@ const PostDetail = (post) => {
                 const _comments = [];
 
                 querySnapshot.forEach((doc) => {
-                    authorRef.current = post.location.state.post.createdBy;
-                    titleRef.current = post.location.state.post.title;
-                    postRef.current = post.location.state.post.textContent;
-
                     if (doc.data().postId === postId) {
                         _comments.push({
                             id: doc.id,
@@ -93,12 +89,12 @@ const PostDetail = (post) => {
             <Wrapper>
                     {loaded && getComments ? getComments.map((comment, i) => {
                         return (
-                            <Comment comment={comment} postId={postId} />
+                            <Comment key={i} comment={comment} postId={postId} />
                         )
                     })
                     : 
                             <div> DATA LOADING </div>       
-                    }s
+                    }
             </Wrapper>
         </>
     )
